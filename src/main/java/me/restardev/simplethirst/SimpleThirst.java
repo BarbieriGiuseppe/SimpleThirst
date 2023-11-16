@@ -1,5 +1,6 @@
 package me.restardev.simplethirst;
 
+import me.restardev.simplethirst.listeners.PlayerListeners;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SimpleThirst extends JavaPlugin {
@@ -17,6 +18,8 @@ public final class SimpleThirst extends JavaPlugin {
                 + "                                 |___/                          |______|______|\r\n"
                 + "");
 
+        //registro l'evento onplayerjoin
+        getServer().getPluginManager().registerEvents(new PlayerListeners(),this);
 
 
     }

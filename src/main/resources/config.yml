@@ -1,0 +1,7 @@
+
+#Change this string in order to translate the word in your language
+thirst-string: "Sete"
+
+#Put here your unicode in order to change the symbol
+thirst-unicode: "\u2B24"
+

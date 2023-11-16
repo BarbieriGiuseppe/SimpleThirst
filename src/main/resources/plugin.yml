@@ -1,4 +1,4 @@
 name: SimpleThirst
-version: '${version}'
+version: '1.0'
 main: me.restardev.simplethirst.SimpleThirst
 api-version: '1.20'

@@ -1,7 +1,9 @@
 package me.restardev.simplethirst;
 
 import me.restardev.simplethirst.listeners.PlayerListeners;
+import me.restardev.simplethirst.utils.ConfigFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.units.qual.C;
 
 public final class SimpleThirst extends JavaPlugin {
 
@@ -19,7 +21,10 @@ public final class SimpleThirst extends JavaPlugin {
                 + "");
 
         //registro l'evento onplayerjoin
-        getServer().getPluginManager().registerEvents(new PlayerListeners(),this);
+        ConfigFile config = new ConfigFile();
+        PlayerListeners playerListeners = new PlayerListeners(config);
+
+        getServer().getPluginManager().registerEvents(playerListeners,this);
 
 
     }

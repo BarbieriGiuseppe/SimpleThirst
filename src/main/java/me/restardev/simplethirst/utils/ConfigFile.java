@@ -13,8 +13,18 @@ public class ConfigFile {
     private String thirstUnicode;
     private String thirstTranslation;
 
+    private String thirstBarColor;
+
     public ConfigFile() {
         loadFromYml("config.yml");
+    }
+
+    public void setThirstBarColor(String thirstBarColor) {
+        this.thirstBarColor = thirstBarColor;
+    }
+
+    public String getThirstBarColor() {
+        return thirstBarColor;
     }
 
     public void setThirstTranslation(String thirstTranslation) {
@@ -77,6 +87,9 @@ public class ConfigFile {
 
             defaultValues.put("# Change the string below in order to change the symbol",null);
             defaultValues.put("thirst-unicode", "\u2B24");
+
+            defaultValues.put("# Change the string below in order to change the action bar color ",null);
+            defaultValues.put("thirst-bar-color", "&9");
 
             DumperOptions options = new DumperOptions();
             options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);

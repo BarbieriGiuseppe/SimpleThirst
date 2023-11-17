@@ -15,6 +15,7 @@ public class PlayerListeners implements Listener {
 
     // Costruttore che accetta un'istanza di ConfigFile
     public PlayerListeners(ConfigFile config) {
+
         this.config = config;
     }
 
@@ -24,6 +25,7 @@ public class PlayerListeners implements Listener {
     String thirstBarUnicode;
     String sete;
 
+    String thirstBarColor;
         @EventHandler
         public void onPlayerJoin(PlayerJoinEvent playerEvent){
             Player player = playerEvent.getPlayer();
@@ -31,18 +33,24 @@ public class PlayerListeners implements Listener {
 
         }
 
-    public void showThirstBar(Player player){
+    public void showThirstBar(Player player) {
+        sete = config.getThirstTranslation();
+        thirstBarUnicode = config.getThirstUnicode();
+        fullThirstBar = sete + thirstBarUnicode;
 
-            sete = config.getThirstTranslation();
-            thirstBarUnicode = config.getThirstUnicode();
+        // Ottieni il colore per la Action Bar dalla configurazione
+        thirstBarColor = config.getThirstBarColor();
 
-            String fullThirstBar = ChatColor.AQUA + thirstBarUnicode;
+        // Aggiungi il prefisso del colore al testo
+        String coloredText = thirstBarColor + sete;
+        String coloredUnicode = thirstBarColor + thirstBarUnicode;
 
+        // Converti il codice di formato del testo di Minecraft
+        String formattedText = ChatColor.translateAlternateColorCodes('&', coloredText + coloredUnicode);
 
         player.spigot().sendMessage(
                 ChatMessageType.ACTION_BAR,
-                new TextComponent(sete + fullThirstBar));
-
+                new TextComponent(formattedText));
     }
 
 

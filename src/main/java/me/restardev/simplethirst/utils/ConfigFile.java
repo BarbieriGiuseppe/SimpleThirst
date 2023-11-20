@@ -68,37 +68,47 @@ public class ConfigFile {
             @SuppressWarnings("unchecked")
             Map<String, Object> dati = yaml.load(input);
 
+
             // Imposta i valori della classe utilizzando i dati dal file YAML
             if (dati != null) {
                 setThirstTranslation((String) dati.get("thirst-string"));
                 setThirstUnicode((String) dati.get("thirst-unicode"));
+                setThirstBarColor((String) dati.get("thirst-bar-color"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void creaFileDefault(File fileYml) {
-        try {
-            // Crea un nuovo file con i valori predefiniti
-            Map<String, Object> defaultValues = new HashMap<>();
-            defaultValues.put("# Change the string below in order to translate the word in your language",null);
-            defaultValues.put("thirst-string", "Sete");
+    private void creaFileDefault(File file) {
+        // Crea un oggetto Yaml
+        Yaml yaml = new Yaml();
 
-            defaultValues.put("# Change the string below in order to change the symbol",null);
-            defaultValues.put("thirst-unicode", "\u2B24");
+        // Crea una mappa per i valori predefiniti
+        Map<String, Object> defaultValues = new HashMap<>();
+        defaultValues.put("thirst-string", "Sete:");
+        defaultValues.put("thirst-unicode", "\u2B24");
+        defaultValues.put("thirst-bar-color","&9");
+        // Aggiungi commenti usando DumperOptions
+        DumperOptions dumperOptions = new DumperOptions();
+        dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        dumperOptions.setPrettyFlow(true);
 
-            defaultValues.put("# Change the string below in order to change the action bar color ",null);
-            defaultValues.put("thirst-bar-color", "&9");
+        // Creare uno StringWriter per scrivere il risultato
+        StringWriter stringWriter = new StringWriter();
+        // Utilizzare un nuovo oggetto Yaml con DumperOptions
+        Yaml yamlWithComments = new Yaml(dumperOptions);
 
-            DumperOptions options = new DumperOptions();
-            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        // Converti la mappa in YAML e scrivi su stringWriter
+        yamlWithComments.dump(defaultValues, stringWriter);
 
-            Yaml yaml = new Yaml(options);
+        // Scrivi la stringa risultante nel file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            // Aggiungi commenti al file usando stringWriter
+            writer.write("# In this file you can customize your thirst bar as you like\n");
 
-            try (Writer output = new FileWriter(fileYml)) {
-                yaml.dump(defaultValues, output);
-            }
+            writer.write(stringWriter.toString());
+
         } catch (IOException e) {
             e.printStackTrace();
         }

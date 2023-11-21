@@ -14,10 +14,39 @@ public class ConfigFile {
     private String thirstTranslation;
 
     private String thirstBarColor;
+    private int sprintThirstDecrease;
 
+    public String getThirstMessage() {
+        return thirstMessage;
+    }
+
+    public void setThirstMessage(String thirstMessage) {
+        this.thirstMessage = thirstMessage;
+    }
+
+    private String thirstMessage;
+    public double getHeartRestoreThirstDecrease() {
+        return heartRestoreThirstDecrease;
+    }
+
+    public void setHeartRestoreThirstDecrease(double heartRestoreThirstDecrease) {
+        this.heartRestoreThirstDecrease = heartRestoreThirstDecrease;
+    }
+
+    private double heartRestoreThirstDecrease;
     public ConfigFile() {
         loadFromYml("config.yml");
     }
+    public int getSprintThirstDecrease() {
+        return sprintThirstDecrease;
+    }
+
+    public void setSprintThirstDecrease(int sprintThirstDecrease) {
+        this.sprintThirstDecrease = sprintThirstDecrease;
+    }
+
+
+
 
     public void setThirstBarColor(String thirstBarColor) {
         this.thirstBarColor = thirstBarColor;
@@ -74,6 +103,9 @@ public class ConfigFile {
                 setThirstTranslation((String) dati.get("thirst-string"));
                 setThirstUnicode((String) dati.get("thirst-unicode"));
                 setThirstBarColor((String) dati.get("thirst-bar-color"));
+                setSprintThirstDecrease((int) dati.get("sprint-time"));
+                setHeartRestoreThirstDecrease((double) dati.get("hearts-restored"));
+                setThirstMessage((String) dati.get("thirst-message"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +120,10 @@ public class ConfigFile {
         Map<String, Object> defaultValues = new HashMap<>();
         defaultValues.put("thirst-string", "Sete:");
         defaultValues.put("thirst-unicode", "\u2B24");
-        defaultValues.put("thirst-bar-color","&9");
+        defaultValues.put("thirst-bar-color","&3");
+        defaultValues.put("sprint-time",15);
+        defaultValues.put("hearts-restored",1.0); //deve essere un valore compreso tra 0.03 e 1.0
+        defaultValues.put("thirst-message","Hai sete! Bevi il prima possibile");
         // Aggiungi commenti usando DumperOptions
         DumperOptions dumperOptions = new DumperOptions();
         dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);

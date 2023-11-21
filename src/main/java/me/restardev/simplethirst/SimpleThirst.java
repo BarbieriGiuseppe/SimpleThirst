@@ -4,6 +4,7 @@ import me.restardev.simplethirst.listeners.PlayerListeners;
 import me.restardev.simplethirst.utils.ConfigFile;
 import me.restardev.simplethirst.utils.PlayerFile;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,7 +25,7 @@ public final class SimpleThirst extends JavaPlugin {
 
         // Avvia la task periodica per l'aggiornamento della sete dopo 5 secondi di sprint
         startUpdateActionBarTask(playerListeners);
-        getServer().getPluginManager().registerEvents(playerListeners, this);
+        Bukkit.getPluginManager().registerEvents(new PlayerListeners(config, playerFile), this);
         // Avvia la task periodica per l'Action Bar
 
     }
@@ -43,7 +44,8 @@ public final class SimpleThirst extends JavaPlugin {
             public void run() {
                 // Chiamato ogni secondo (20 ticks)
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    playerListeners.setThirstBar(player);
+                        playerListeners.setThirstBar(player);
+
                 }
             }
         }.runTaskTimer(this, 0L, 20L).getTaskId(); // 20L equivale a 1 secondo (20 ticks)
@@ -61,9 +63,10 @@ public final class SimpleThirst extends JavaPlugin {
             public void run() {
                 // Chiamato ogni secondo (20 ticks)
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.isSprinting()) {
-                        playerListeners.updateThirstBar(player);
-                    }
+                        if (player.isSprinting()) {
+                            playerListeners.updateThirstBar(player);
+                        }
+
                 }
             }
         }.runTaskTimer(this, 0L, 20L).getTaskId(); // 20L equivale a 1 secondo (20 ticks)

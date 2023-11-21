@@ -111,6 +111,40 @@ public class PlayerFile {
         }
     }
 
+    public void updatePlayerFile(String uuid) {
+        // Creare la cartella del plugin se non esiste
+        File cartellaPlugin = new File("plugins/SimpleThirst/PlayerData");
+        if (!cartellaPlugin.exists()) {
+            cartellaPlugin.mkdirs();
+        }
+        File fileYml = new File(cartellaPlugin, uuid + ".yml");
+
+        try {
+            DumperOptions options = new DumperOptions();
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            options.setPrettyFlow(true);
+
+            Yaml yaml = new Yaml(options);
+
+            // Creare la mappa con i dati
+            // Qui puoi aggiungere i dati che desideri salvare nel file
+            // In questo esempio, sto salvando l'UUID, il nome e la sete
+            // Modifica questo blocco in base alle tue esigenze
+            HashMap<String, Object> playerData = new HashMap<>();
+            playerData.put("uuid", uuid);
+            playerData.put("name", name);
+            playerData.put("thirst", thirst);
+
+            // Scrivere la mappa nel file YAML
+            try (FileWriter writer = new FileWriter(fileYml)) {
+                yaml.dump(playerData, writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 

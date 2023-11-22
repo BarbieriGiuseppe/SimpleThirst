@@ -32,8 +32,6 @@ public class PlayerListeners implements Listener {
         this.playerFile = playerFile;
     }
 
-    // Converti il colore esadecimale in un oggetto ChatColor
-
     String fullThirstBar;
     String thirstBarUnicode;
     String thirstBarString;
@@ -185,8 +183,8 @@ public class PlayerListeners implements Listener {
             player.spigot().sendMessage(ChatMessageType.SYSTEM, TextComponent.fromLegacyText(message));
 
             // Apply effects
-            player.damage(1.0);
             player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 40, 0)); // 40 ticks = 2 seconds
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 40, 0)); // 40 ticks = 2 seconds
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 0)); // 40 ticks = 2 seconds
         }
     }

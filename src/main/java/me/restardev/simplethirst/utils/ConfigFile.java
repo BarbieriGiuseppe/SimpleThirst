@@ -45,9 +45,6 @@ public class ConfigFile {
         this.sprintThirstDecrease = sprintThirstDecrease;
     }
 
-
-
-
     public void setThirstBarColor(String thirstBarColor) {
         this.thirstBarColor = thirstBarColor;
     }

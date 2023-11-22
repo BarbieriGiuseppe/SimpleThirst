@@ -1,0 +1,21 @@
+custom_recipe_1:
+  material: DIAMOND_SWORD
+  display_name: "&bSpada Magica"
+  lore:
+    - "&7Una spada potente creata con magia"
+  potion_effects:
+    - type: INCREASE_DAMAGE
+  duration: 300
+  amplifier: 1
+  thirst: 5.0
+  custom_id: 1
+  recipe:
+    - IRON_INGOT
+    - STICK
+    - AIR
+    - IRON_INGOT
+    - STICK
+    - AIR
+    - AIR
+    - STICK
+    - AIR

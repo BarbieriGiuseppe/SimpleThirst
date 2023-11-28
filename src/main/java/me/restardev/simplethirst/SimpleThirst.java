@@ -7,6 +7,8 @@ import me.restardev.simplethirst.utils.CraftingFile;
 import me.restardev.simplethirst.utils.PlayerFile;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -22,33 +24,52 @@ import java.util.Map;
 public final class SimpleThirst extends JavaPlugin {
     private int actionBarTaskId; // Variabile per memorizzare l'ID della task periodica
     private int updateActionBarTaskId; // Variabile per memorizzare l'ID della task periodica
-    FileConfiguration craftingConfig;
+    String customRecipeKey;
      CraftingFile craftingFile;
+    List<String> allCustomRecipeKeys;
+    FileConfiguration configCraftingFile;
+    String keyPath = customRecipeKey + ".";
 
     @Override
     public void onEnable() {
-        System.out.println("SimpleThirst abilitato");
+        System.out.println("SimpleThirst enabled");
 
         // Istanzia la classe CraftingListeners e passa l'istanza del plugin
         // Carica o crea il file di configurazione
 
 
         craftingFile = new CraftingFile(new File(getDataFolder(), "craftings.yml"));
+        configCraftingFile = craftingFile.getConfig();
 
-        // Esempio di come ottenere i dati di un custom recipe
-        craftingFile.printAllCraftingData();
+        // Ottieni l'ArrayList contenente tutte le chiavi dei custom recipe
+         allCustomRecipeKeys = craftingFile.getAllCustomRecipeKeys();
 
+         /*
+         questa iterazione serve ad ottenere i singoli campi di un oggetto ad esempio custom_recipe_1
+        // Itera sull'ArrayList e stampa le chiavi
+        for (String customRecipeKey : allCustomRecipeKeys) {
+
+            // Ottenere la lista di materiali per il custom recipe corrente
+           String material = craftingFile.getMaterial(customRecipeKey);
+           System.out.println("Loaded " + material);
+        }
+*/
+        System.out.println("Loaded " + allCustomRecipeKeys.size() +  " " + "Recipes");
         // Registro l'evento onPlayerJoin
         ConfigFile config = new ConfigFile();
         PlayerFile playerFile = new PlayerFile();
         PlayerListeners playerListeners = new PlayerListeners(config, playerFile);
+
+        //Registro i crafting listeners
+        CraftingListeners craftingListeners = new CraftingListeners(craftingFile, playerFile);
+
         startActionBarTask(playerListeners);
 
         // Avvia la task periodica per l'aggiornamento della sete dopo 5 secondi di sprint
         startUpdateActionBarTask(playerListeners);
 
         // Registra l'evento di crafting
-       // Bukkit.getPluginManager().registerEvents(craftingListeners, this);
+        Bukkit.getPluginManager().registerEvents(craftingListeners, this);
         Bukkit.getPluginManager().registerEvents(playerListeners, this);
     }
 

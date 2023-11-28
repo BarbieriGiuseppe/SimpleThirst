@@ -1,12 +1,16 @@
 package me.restardev.simplethirst.utils;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CraftingFile {
@@ -70,18 +74,94 @@ public class CraftingFile {
         return new HashMap<>();
     }
 
+    public List<String> getAllCustomRecipeKeys() {
+
+        return new ArrayList<>(config.getKeys(false));
+    }
+
+    public List<String> getRecipe(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null && customRecipeSection.isList("recipe")) {
+            return customRecipeSection.getStringList("recipe");
+        }
+        return new ArrayList<>();
+    }
+
+    public String getMaterial(String customRecipeKey){
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null) {
+            return customRecipeSection.getString("material"); // 0 è il valore di default se "amplifier" non è presente
+        }
+        return null;
+    }
+    public String getDisplayName(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null) {
+            return customRecipeSection.getString("display_name", "");
+        }
+        return "";
+    }
+
+    public List<String> getLore(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null && customRecipeSection.isList("lore")) {
+            return customRecipeSection.getStringList("lore");
+        }
+        return new ArrayList<>();
+    }
+
+    public String getPotionEffectType(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null && customRecipeSection.isList("potion_effects")) {
+            List<String> potionEffects = customRecipeSection.getStringList("potion_effects");
+            if (!potionEffects.isEmpty()) {
+                String firstPotionEffect = potionEffects.get(0);
+                ConfigurationSection effectSection = YamlConfiguration.loadConfiguration(new StringReader(firstPotionEffect));
+                return effectSection.getString("type", "");
+            }
+        }
+        return "";
+    }
+
+    public int getDuration(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null) {
+            return customRecipeSection.getInt("duration", 0);
+        }
+        return 0;
+    }
+
+    public int getAmplifier(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null) {
+            return customRecipeSection.getInt("amplifier", 0);
+        }
+        return 0;
+    }
+
+    public double getThirst(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null) {
+            return customRecipeSection.getDouble("thirst", 0.0);
+        }
+        return 0.0;
+    }
+
+    public int getCustomId(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey);
+        if (customRecipeSection != null) {
+            return customRecipeSection.getInt("custom_id", 0);
+        }
+        return 0;
+    }
+
     public File getFile() {
         return file;
     }
 
-    public void printAllCraftingData() {
-        for (String customRecipeKey : config.getKeys(true)) {
-            Map<String, Object> craftingData = getCraftingData(customRecipeKey);
-            System.out.println("Crafting Data for " + customRecipeKey + ":");
-            for (Map.Entry<String, Object> entry : craftingData.entrySet()) {
-                System.out.println(entry.getKey() + ": " + entry.getValue());
-            }
-            System.out.println("------");
-        }
+
+    public FileConfiguration getConfig() {
+        return config;
     }
+
 }

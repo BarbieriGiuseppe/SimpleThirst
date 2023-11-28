@@ -1,6 +1,8 @@
 package me.restardev.simplethirst.listeners;
 
+import me.restardev.simplethirst.utils.ConfigFile;
 import me.restardev.simplethirst.utils.CraftingFile;
+import me.restardev.simplethirst.utils.PlayerFile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -13,12 +15,14 @@ import java.util.Map;
 
 public class CraftingListeners implements Listener {
 
-    private final JavaPlugin plugin;
+    private CraftingFile config;
+    private PlayerFile playerFile;
 
-    public CraftingListeners(JavaPlugin plugin) {
-        this.plugin = plugin;
+    // Costruttore che accetta un'istanza di ConfigFile
+    public CraftingListeners(CraftingFile config,PlayerFile playerFile) {
 
-
+        this.config = config;
+        this.playerFile = playerFile;
     }
 
 

@@ -10,12 +10,18 @@ custom_recipe_1:
   thirst: 5.0
   custom_id: 1
   recipe:
-    - IRON_INGOT
-    - STICK
-    - AIR
-    - IRON_INGOT
-    - STICK
-    - AIR
-    - AIR
-    - STICK
-    - AIR
+    shape:
+      - "ABC"
+      - "DEF"
+      - "GHI"
+    ingredients:
+      A: IRON_INGOT
+      B: STICK
+      C: AIR
+      D: IRON_INGOT
+      E: STICK
+      F: AIR
+      G: AIR
+      H: STICK
+      I: AIR
+

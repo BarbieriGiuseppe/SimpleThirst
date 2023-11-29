@@ -28,9 +28,9 @@ public class CraftingFile {
 
     private void saveResource() {
         try {
-            // Itera su tutte le chiavi presenti nel file YAML
-            for (String customRecipeKey : config.getKeys(false)) {
-                String keyPath = customRecipeKey + ".";
+                // Crea un esempio di custom_recipe
+                String exampleKey = "custom_recipe_1";
+                String keyPath = exampleKey + ".";
 
                 config.set(keyPath + "material", "DIAMOND_SWORD");
                 config.set(keyPath + "display_name", "&bSpada Magica");
@@ -40,17 +40,29 @@ public class CraftingFile {
                 config.set(keyPath + "amplifier", 1);
                 config.set(keyPath + "thirst", 5.0);
                 config.set(keyPath + "custom_id", 1);
-                config.set(keyPath + "recipe", java.util.Arrays.asList("IRON_INGOT", "STICK", "AIR", "IRON_INGOT", "STICK", "AIR", "AIR", "STICK", "AIR"));
-            }
 
-            // Salva il resource nel file
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-            config.save(file);
+                // Aggiungi la sezione recipe
+                config.set(keyPath + "recipe.shape", java.util.Arrays.asList("ABC", "DEF", "GHI"));
+                Map<String, String> ingredients = new HashMap<>();
+                ingredients.put("A", "IRON_INGOT");
+                ingredients.put("B", "STICK");
+                ingredients.put("C", "AIR");
+                ingredients.put("D", "IRON_INGOT");
+                ingredients.put("E", "STICK");
+                ingredients.put("F", "AIR");
+                ingredients.put("G", "AIR");
+                ingredients.put("H", "STICK");
+                ingredients.put("I", "AIR");
+                config.set(keyPath + "recipe.ingredients", ingredients);
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+                config.save(file);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
 
@@ -153,6 +165,31 @@ public class CraftingFile {
             return customRecipeSection.getInt("custom_id", 0);
         }
         return 0;
+    }
+
+    public List<String> getShape(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey + ".recipe.");
+        if (customRecipeSection != null && customRecipeSection.isList("shape")) {
+            return customRecipeSection.getStringList("shape");
+        }
+        return new ArrayList<>();
+    }
+
+    public Map<Character, Material> getIngredients(String customRecipeKey) {
+        ConfigurationSection customRecipeSection = config.getConfigurationSection(customRecipeKey + ".recipe.");
+        Map<Character, Material> ingredientsMap = new HashMap<>();
+
+        if (customRecipeSection != null && customRecipeSection.isConfigurationSection("ingredients")) {
+            ConfigurationSection ingredientsSection = customRecipeSection.getConfigurationSection("ingredients");
+
+            for (String key : ingredientsSection.getKeys(false)) {
+                char ingredientChar = key.charAt(0);
+                Material ingredientMaterial = Material.getMaterial(ingredientsSection.getString(key));
+                ingredientsMap.put(ingredientChar, ingredientMaterial);
+            }
+        }
+
+        return ingredientsMap;
     }
 
     public File getFile() {

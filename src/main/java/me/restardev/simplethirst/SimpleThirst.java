@@ -54,23 +54,24 @@ public final class SimpleThirst extends JavaPlugin {
            System.out.println("Loaded " + material);
         }
 */
-        System.out.println("Loaded " + allCustomRecipeKeys.size() +  " " + "Recipes");
+        //System.out.println("Loaded " + allCustomRecipeKeys.size() +  " " + "Recipes");
         // Registro l'evento onPlayerJoin
         ConfigFile config = new ConfigFile();
         PlayerFile playerFile = new PlayerFile();
         PlayerListeners playerListeners = new PlayerListeners(config, playerFile);
 
         //Registro i crafting listeners
-        CraftingListeners craftingListeners = new CraftingListeners(craftingFile, playerFile);
+        CraftingListeners craftingListeners = new CraftingListeners(craftingFile, playerFile,this);
 
         startActionBarTask(playerListeners);
-
         // Avvia la task periodica per l'aggiornamento della sete dopo 5 secondi di sprint
         startUpdateActionBarTask(playerListeners);
 
         // Registra l'evento di crafting
         Bukkit.getPluginManager().registerEvents(craftingListeners, this);
         Bukkit.getPluginManager().registerEvents(playerListeners, this);
+
+        craftingListeners.registerCrafting(allCustomRecipeKeys);
     }
 
 

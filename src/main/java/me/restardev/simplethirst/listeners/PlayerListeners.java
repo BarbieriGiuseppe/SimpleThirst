@@ -5,7 +5,6 @@ import me.restardev.simplethirst.utils.PlayerFile;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,28 +14,29 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import static org.bukkit.Bukkit.getLogger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerListeners implements Listener {
 
     private ConfigFile config;
     private PlayerFile playerFile;
+    private List<ItemStack> items = new ArrayList<>();
+
 
     // Costruttore che accetta un'istanza di ConfigFile
-    public PlayerListeners(ConfigFile config,PlayerFile playerFile) {
+    public PlayerListeners(ConfigFile config, PlayerFile playerFile, List<ItemStack> items) {
 
         this.config = config;
         this.playerFile = playerFile;
+        this.items = items;
     }
 
     String fullThirstBar;
@@ -115,7 +115,6 @@ public class PlayerListeners implements Listener {
                     }else{
                         playerFile.setThirst(currentThirst + 2.0);
                         playerFile.updatePlayerFile(player.getUniqueId().toString());
-
 
                     }
 

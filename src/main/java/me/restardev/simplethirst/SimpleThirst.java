@@ -12,11 +12,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,8 @@ public final class SimpleThirst extends JavaPlugin {
     List<String> allCustomRecipeKeys;
     FileConfiguration configCraftingFile;
     String keyPath = customRecipeKey + ".";
+    private List<ItemStack> items = new ArrayList<>();
+
 
     @Override
     public void onEnable() {
@@ -58,10 +62,13 @@ public final class SimpleThirst extends JavaPlugin {
         // Registro l'evento onPlayerJoin
         ConfigFile config = new ConfigFile();
         PlayerFile playerFile = new PlayerFile();
-        PlayerListeners playerListeners = new PlayerListeners(config, playerFile);
+        CraftingListeners craftingListeners = new CraftingListeners(craftingFile, playerFile,this);
+        items = craftingListeners.registerCrafting(allCustomRecipeKeys);
+        PlayerListeners playerListeners = new PlayerListeners(config, playerFile,items);
 
         //Registro i crafting listeners
-        CraftingListeners craftingListeners = new CraftingListeners(craftingFile, playerFile,this);
+
+
 
         startActionBarTask(playerListeners);
         // Avvia la task periodica per l'aggiornamento della sete dopo 5 secondi di sprint
@@ -71,7 +78,6 @@ public final class SimpleThirst extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(craftingListeners, this);
         Bukkit.getPluginManager().registerEvents(playerListeners, this);
 
-        craftingListeners.registerCrafting(allCustomRecipeKeys);
     }
 
 

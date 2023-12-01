@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,7 +46,7 @@ public class CraftingListeners implements Listener {
      *
      * @param allCustomRecipeKeys
      */
-    public void registerCrafting(List<String> allCustomRecipeKeys) {
+    public List<ItemStack> registerCrafting(List<String> allCustomRecipeKeys) {
         for (String customRecipeKey : allCustomRecipeKeys) {
             String materialName = config.getMaterial(customRecipeKey);
 
@@ -85,7 +86,7 @@ public class CraftingListeners implements Listener {
 
         System.out.println("Added " + items.size() + " Items"); //stampo sulla console il numero di oggetti aggiunti in game
 
-
+        return items;
     }
 
 }
